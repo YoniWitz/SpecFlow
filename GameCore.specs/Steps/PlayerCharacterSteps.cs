@@ -1,4 +1,5 @@
-﻿using TechTalk.SpecFlow;
+﻿using System.Linq;
+using TechTalk.SpecFlow;
 using Xunit;
 
 namespace GameCore.Specs.Features
@@ -15,6 +16,17 @@ namespace GameCore.Specs.Features
         {
             _player = new PlayerCharacter();
         }
+
+        [Given(@"I have the following")]
+        public void GivenIHaveTheFollowing(Table table)
+        {
+            string race = table.Rows.First(row => row["attribute"] == "Race")["value"];
+            string damageResistance = table.Rows.First(row => row["attribute"] == "DamageResistance")["value"];
+
+            _player.Race = race;
+            _player.DamageResistance = int.Parse(damageResistance);
+        }
+
 
         [When(@"I take (.*) damage")]
         public void WhenITakeDamage(int damage)
