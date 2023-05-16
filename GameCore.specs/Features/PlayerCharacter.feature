@@ -3,15 +3,14 @@
 	As human player
 	I want my character attributes to be correctly represented
 
-Scenario: Taking no damage when hit doesn't affect health
+Scenario Outline: Health reduction
 	Given I'm a new player
-	When I take 0 damage
-	Then My health should now be 100  
-
-Scenario: Starting health is reduced when hit
-	Given I'm a new player
-	When I take 40 damage
-	Then My health should now be 60
+	When I take <damage> damage
+	Then My health should now be <remainingHealth>
+Examples: 
+	| damage | remainingHealth |
+	| 0      | 100             |
+	| 40     | 60              |
 
 Scenario: Taking too much damage results in player death
 	Given I'm a new player
