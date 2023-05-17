@@ -29,3 +29,9 @@ Examples:
 	| damage | remainingHealth |
 	| 0      | 100             |
 	| 40     | 90              |
+
+Scenario: Healers restore all health
+	Given MY character class is set to Healer
+	When I take 40 damage 
+	And Cast a healing spell
+	Then My health should now be 100
