@@ -17,7 +17,7 @@ namespace GameCore.Specs.Features
             _player = new PlayerCharacter();
         }
 
-        [Given(@"I have the following")]
+        [Given(@"I have the following attributes")]
         public void GivenIHaveTheFollowing(Table table)
         {
             string race = table.Rows.First(row => row["attribute"] == "Race")["value"];
