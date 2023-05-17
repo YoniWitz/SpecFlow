@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using TechTalk.SpecFlow;
 using Xunit;
+using TechTalk.SpecFlow.Assist;
 
 namespace GameCore.Specs.Features
 {
@@ -15,11 +16,10 @@ namespace GameCore.Specs.Features
         [Given(@"I have the following attributes")]
         public void GivenIHaveTheFollowing(Table table)
         {
-            string race = table.Rows.First(row => row["attribute"] == "Race")["value"];
-            string damageResistance = table.Rows.First(row => row["attribute"] == "DamageResistance")["value"];
+            var attributes = table.CreateInstance<PlayerAttributes>();
 
-            _player.Race = race;
-            _player.DamageResistance = int.Parse(damageResistance);
+            _player.Race = attributes.Race;
+            _player.DamageResistance = attributes.Resistance;
         }
 
         [Given(@"MY character class is set to (.*)")]

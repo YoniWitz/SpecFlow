@@ -188,7 +188,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Race",
                             "Elf"});
                 table1.AddRow(new string[] {
-                            "DamageResistance",
+                            "Resistance",
                             "10"});
 #line 22
  testRunner.And("I have the following attributes", ((string)(null)), table1, "And ");

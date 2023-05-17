@@ -22,7 +22,7 @@ Scenario: Elf race characters get additional 20 damage resistance
 	And I have the following attributes
 	| attribute         | value |
 	| Race              | Elf   |
-	| DamageResistance | 10    |
+	| Resistance		| 10    |
 	When I take <damage> damage
 	Then My health should now be <remainingHealth>
 Examples: 
