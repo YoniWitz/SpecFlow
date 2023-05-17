@@ -35,10 +35,7 @@ namespace GameCore
             Health -= totalDamageTaken;
             if (Health <= 0) IsDead = true;
         }
-        public void CastHealingSpell()
-        {
-            Health = CharacterClass.Healer.Equals(CharacterClass) ? 100 : Health + 10;
-        }
+        public void CastHealingSpell() => Health = CharacterClass.Healer.Equals(CharacterClass) ? 100 : Health + 10;
 
         public void ReadHealthScroll()
         {
