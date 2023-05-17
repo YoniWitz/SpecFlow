@@ -3,8 +3,10 @@
 	As human player
 	I want my character attributes to be correctly represented
 
-Scenario Outline: Health reduction
+	Background: 
 	Given I'm a new player
+
+Scenario Outline: Health reduction
 	When I take <damage> damage
 	Then My health should now be <remainingHealth>
 Examples: 
@@ -13,13 +15,11 @@ Examples:
 	| 40     | 60              |
 
 Scenario: Taking too much damage results in player death
-	Given I'm a new player
 	When I take 100 damage
 	Then I should be dead
 
 Scenario: Elf race characters get additional 20 damage resistance
-	Given I'm a new player
-	And I have the following
+	And I have the following attributes
 	| attribute         | value |
 	| Race              | Elf   |
 	| DamageResistance | 10    |
