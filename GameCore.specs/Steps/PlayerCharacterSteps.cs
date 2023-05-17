@@ -16,7 +16,8 @@ namespace GameCore.Specs.Features
         [Given(@"I have the following attributes")]
         public void GivenIHaveTheFollowing(Table table)
         {
-            var attributes = table.CreateInstance<PlayerAttributes>();
+            //var attributes = table.CreateInstance<PlayerAttributes>();
+            dynamic attributes = table.CreateDynamicInstance();
 
             _player.Race = attributes.Race;
             _player.DamageResistance = attributes.Resistance;
