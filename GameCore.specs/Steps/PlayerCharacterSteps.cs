@@ -2,6 +2,7 @@
 using TechTalk.SpecFlow;
 using Xunit;
 using TechTalk.SpecFlow.Assist;
+using System;
 
 namespace GameCore.Specs.Features
 {
@@ -73,6 +74,12 @@ namespace GameCore.Specs.Features
                 });
             }
         }
+
+        [Given(@"I last slept (.* days ago)")]
+        public void GivenILastSleptDaysAgo(DateTime lastSleepTime)=> _player.LastSleepTime = lastSleepTime;
+
+        [When(@"I read a restore health scroll")]
+        public void WhenIReadARestoreHealthScroll()=> _player.ReadHealthScroll();
 
         [Then(@"My total magical power should be (.*)")]
         public void ThenMyTotalMagicalPowerShouldBe(int expectedPower) => Assert.Equal(_player.MagicalPower, expectedPower);
