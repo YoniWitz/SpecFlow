@@ -3,6 +3,7 @@ using TechTalk.SpecFlow;
 using Xunit;
 using TechTalk.SpecFlow.Assist;
 using System;
+using System.Collections.Generic;
 
 namespace GameCore.Specs.Features
 {
@@ -25,7 +26,7 @@ namespace GameCore.Specs.Features
 
             //strongly typed
             //var attributes = table.CreateInstance<PlayerAttributes>();
-            
+
             //dynamically typed
             dynamic attributes = table.CreateDynamicInstance();
 
@@ -34,7 +35,7 @@ namespace GameCore.Specs.Features
         }
 
         [Given(@"My character class is set to (.*)")]
-        public void GivenMyCharacterClassIsSetTo(CharacterClass characterClass) => _player.CharacterClass = characterClass; 
+        public void GivenMyCharacterClassIsSetTo(CharacterClass characterClass) => _player.CharacterClass = characterClass;
 
         [Given(@"I have the followingt magical items")]
         public void GivenIHaveTheFollowingtMagicalItems(Table table)
@@ -76,15 +77,19 @@ namespace GameCore.Specs.Features
         }
 
         [Given(@"I last slept (.* days ago)")]
-        public void GivenILastSleptDaysAgo(DateTime lastSleepTime)=> _player.LastSleepTime = lastSleepTime;
+        public void GivenILastSleptDaysAgo(DateTime lastSleepTime) => _player.LastSleepTime = lastSleepTime;
+
+        [Given(@"I have the following weapons")]
+        public void GivenIHaveTheFollowingWeapons(IEnumerable<Weapon> weapons) => _player.Weapons.AddRange(weapons);
+
+        [Then(@"My weapons should be worth (.*)")]
+        public void ThenMyWeaponsShouldBeWorth(int weaponsWorth) => Assert.Equal(weaponsWorth, _player.WeaponsValue);
 
         [When(@"I read a restore health scroll")]
-        public void WhenIReadARestoreHealthScroll()=> _player.ReadHealthScroll();
+        public void WhenIReadARestoreHealthScroll() => _player.ReadHealthScroll();
 
         [Then(@"My total magical power should be (.*)")]
         public void ThenMyTotalMagicalPowerShouldBe(int expectedPower) => Assert.Equal(_player.MagicalPower, expectedPower);
-
-        public void GivenMYCharacterClassIsSetTo(CharacterClass characterClass) => _player.CharacterClass = characterClass;
 
         [When(@"Cast a healing spell")]
         public void WhenCastAHealingSpell() => _player.CastHealingSpell();

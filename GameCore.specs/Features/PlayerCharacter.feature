@@ -49,5 +49,13 @@ Scenario: Total magical power
 Scenario: Reading a restore health scroll when over tired has no affect
 	Given I last slept 3 days ago
 	When I take 40 damage
-		And I read a restore health scroll
+	And I read a restore health scroll
 	Then My health should now be 60
+
+Scenario: weapons are worth money
+	Given I have the following weapons
+		| name  | value |
+		| Sword | 50    |
+		| Pick  | 40    |
+		| Knife | 10    |
+	Then My weapons should be worth 100
