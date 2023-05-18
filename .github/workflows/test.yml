@@ -9,12 +9,18 @@ jobs:
     name: Build & Test
     runs-on: ubuntu-latest    
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-dotnet@v1
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '3.1.x'
-    - uses: actions/cryptic-wizard/run-specflow-tests@v1.3.1
+        dotnet-version: 3.1.x
+    - uses:  ./
       with:
-        test-assembly-path: MySpecflowProject/bin/Release/netcoreapp3.1
-        test-assembly-dll: MySpecflowProject.dll
-        output-html: ${{ matrix.os }}.html
+        test-assembly-dll: GameCore.specs/bin/Debug/netcoreapp3.1/RunSpecflowTests.dll
+        test-execution-json: GameCore.specs/bin/Debug/netcoreapp3.1/TestExecution.json
+        output-html: CalculatorResults.html
+        framework: netcoreapp3.1
+        configuration: 'Debug'
+        logger: trx
+        logger-file-name: ../../CalculatorResults.trx
