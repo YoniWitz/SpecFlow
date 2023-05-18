@@ -16,14 +16,67 @@ namespace GameCore.Specs.Features
         [Given(@"I have the following attributes")]
         public void GivenIHaveTheFollowing(Table table)
         {
+            //loosely typed
+            string race = table.Rows.First(row => "Race".Equals(row["attribute"]))["value"];
+            string damageResistance = table.Rows.First(row => "Resistance".Equals(row["attribute"]))["value"];
+            _player.Race = race;
+            _player.DamageResistance = int.Parse(damageResistance);
+
+            //strongly typed
             //var attributes = table.CreateInstance<PlayerAttributes>();
+            
+            //dynamically typed
             dynamic attributes = table.CreateDynamicInstance();
 
             _player.Race = attributes.Race;
             _player.DamageResistance = attributes.Resistance;
         }
 
-        [Given(@"MY character class is set to (.*)")]
+        [Given(@"My character class is set to (.*)")]
+        public void GivenMyCharacterClassIsSetTo(CharacterClass characterClass) => _player.CharacterClass = characterClass; 
+
+        [Given(@"I have the followingt magical items")]
+        public void GivenIHaveTheFollowingtMagicalItems(Table table)
+        {
+            //weakly typed
+            //foreach (var row in table.Rows)
+            //{
+            //    var name = row["name"];
+            //    var power = row["power"];
+            //    var value = row["value"];
+
+            //    _player.MagicalItems.Add(new MagicalItem
+            //    {
+            //        Name = name,
+            //        Power = int.Parse(power),
+            //        Value = int.Parse(value)
+            //    });
+            //}
+
+            //strongly typed version
+            //foreach (var row in table.Rows)
+            //{
+            //    MagicalItem magicalItem = row.CreateInstance<MagicalItem>();
+            //    _player.MagicalItems.Add(magicalItem);
+            //}
+
+            //_player.MagicalItems.AddRange(table.CreateSet<MagicalItem>());
+
+            dynamic magicalItems = table.CreateDynamicSet();
+            foreach (var magicalItem in magicalItems)
+            {
+                _player.MagicalItems.Add(new MagicalItem()
+                {
+                    Name = magicalItem.name,
+                    Power = magicalItem.power,
+                    Value = magicalItem.value
+                });
+            }
+        }
+
+        [Then(@"My total magical power should be (.*)")]
+        public void ThenMyTotalMagicalPowerShouldBe(int expectedPower) => Assert.Equal(_player.MagicalPower, expectedPower);
+
         public void GivenMYCharacterClassIsSetTo(CharacterClass characterClass) => _player.CharacterClass = characterClass;
 
         [When(@"Cast a healing spell")]
