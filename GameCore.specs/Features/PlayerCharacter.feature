@@ -45,3 +45,9 @@ Scenario: Total magical power
 		| Amulet | 400   | 200   |
 		| Gloves | 100   | 400   |
 	Then My total magical power should be 700
+
+Scenario: Reading a restore health scroll when over tired has no affect
+	Given I last slept 3 days ago
+	When I take 40 damage
+		And I read a restore health scroll
+	Then My health should now be 60
