@@ -8,12 +8,11 @@ using System.Collections.Generic;
 namespace GameCore.Specs.Features
 {
     [Binding]
-    public class PlayerCharacterSteps
+    public class PlayerCharacterSteps : TechTalk.SpecFlow.Steps
     {
-        private PlayerCharacter _player;
+        private PlayerCharacterStepsContext _context;
 
-        [Given(@"I'm a new player")]
-        public void GivenIMANewPlayer() => _player = new PlayerCharacter();
+        public PlayerCharacterSteps(PlayerCharacterStepsContext context) => _context = context;
 
         [Given(@"I have the following attributes")]
         public void GivenIHaveTheFollowing(Table table)
@@ -21,8 +20,8 @@ namespace GameCore.Specs.Features
             //loosely typed
             string race = table.Rows.First(row => "Race".Equals(row["attribute"]))["value"];
             string damageResistance = table.Rows.First(row => "Resistance".Equals(row["attribute"]))["value"];
-            _player.Race = race;
-            _player.DamageResistance = int.Parse(damageResistance);
+            _context.Player.Race = race;
+            _context.Player.DamageResistance = int.Parse(damageResistance);
 
             //strongly typed
             //var attributes = table.CreateInstance<PlayerAttributes>();
@@ -30,12 +29,15 @@ namespace GameCore.Specs.Features
             //dynamically typed
             dynamic attributes = table.CreateDynamicInstance();
 
-            _player.Race = attributes.Race;
-            _player.DamageResistance = attributes.Resistance;
+            _context.Player.Race = attributes.Race;
+            _context.Player.DamageResistance = attributes.Resistance;
         }
 
         [Given(@"My character class is set to (.*)")]
-        public void GivenMyCharacterClassIsSetTo(CharacterClass characterClass) => _player.CharacterClass = characterClass;
+        public void GivenMyCharacterClassIsSetTo(CharacterClass characterClass) => _context.Player.CharacterClass = characterClass;
+
+        [Given(@"My character race is set to (.*)")]
+        public void GivenMyCharacterRaceIsSetTo(string characterRace) => _context.Player.Race = characterRace;
 
         [Given(@"I have the followingt magical items")]
         public void GivenIHaveTheFollowingtMagicalItems(Table table)
@@ -47,7 +49,7 @@ namespace GameCore.Specs.Features
             //    var power = row["power"];
             //    var value = row["value"];
 
-            //    _player.MagicalItems.Add(new MagicalItem
+            //    _context.Player.MagicalItems.Add(new MagicalItem
             //    {
             //        Name = name,
             //        Power = int.Parse(power),
@@ -59,15 +61,15 @@ namespace GameCore.Specs.Features
             //foreach (var row in table.Rows)
             //{
             //    MagicalItem magicalItem = row.CreateInstance<MagicalItem>();
-            //    _player.MagicalItems.Add(magicalItem);
+            //    _context.Player.MagicalItems.Add(magicalItem);
             //}
 
-            //_player.MagicalItems.AddRange(table.CreateSet<MagicalItem>());
+            //_context.Player.MagicalItems.AddRange(table.CreateSet<MagicalItem>());
 
             dynamic magicalItems = table.CreateDynamicSet();
             foreach (var magicalItem in magicalItems)
             {
-                _player.MagicalItems.Add(new MagicalItem()
+                _context.Player.MagicalItems.Add(new MagicalItem()
                 {
                     Name = magicalItem.name,
                     Power = magicalItem.power,
@@ -77,30 +79,47 @@ namespace GameCore.Specs.Features
         }
 
         [Given(@"I last slept (.* days ago)")]
-        public void GivenILastSleptDaysAgo(DateTime lastSleepTime) => _player.LastSleepTime = lastSleepTime;
+        public void GivenILastSleptDaysAgo(DateTime lastSleepTime) => _context.Player.LastSleepTime = lastSleepTime;
 
         [Given(@"I have the following weapons")]
-        public void GivenIHaveTheFollowingWeapons(IEnumerable<Weapon> weapons) => _player.Weapons.AddRange(weapons);
+        public void GivenIHaveTheFollowingWeapons(IEnumerable<Weapon> weapons) => _context.Player.Weapons.AddRange(weapons);
+
+        [Given(@"I have a magical (.*) with a power of (.*)")]
+        public void GivenIHaveAMagicalWithAPowerOf(string itemName, int power)
+        {
+            _context.Player.MagicalItems.Add(new MagicalItem()
+            {
+                Name = itemName,
+                Power = power
+            });
+            _context.StartingMagicalPower = power;
+        }
+
+        [When(@"I use a magical (.*)")]
+        public void WhenIUseAMagical(string magicalItem) => _context.Player.UseMagicalItem(magicalItem);
+
+        [Then(@"The magical (.*) power should not be reduced")]
+        public void ThenTheAmuletPowerShouldNotBeReduced(string itemName) => Assert.Equal(_context.StartingMagicalPower, _context.Player.MagicalItems.First(item => item.Name.Equals(itemName)).Power);
 
         [Then(@"My weapons should be worth (.*)")]
-        public void ThenMyWeaponsShouldBeWorth(int weaponsWorth) => Assert.Equal(weaponsWorth, _player.WeaponsValue);
+        public void ThenMyWeaponsShouldBeWorth(int weaponsWorth) => Assert.Equal(weaponsWorth, _context.Player.WeaponsValue);
 
         [When(@"I read a restore health scroll")]
-        public void WhenIReadARestoreHealthScroll() => _player.ReadHealthScroll();
+        public void WhenIReadARestoreHealthScroll() => _context.Player.ReadHealthScroll();
 
         [Then(@"My total magical power should be (.*)")]
-        public void ThenMyTotalMagicalPowerShouldBe(int expectedPower) => Assert.Equal(_player.MagicalPower, expectedPower);
+        public void ThenMyTotalMagicalPowerShouldBe(int expectedPower) => Assert.Equal(_context.Player.MagicalPower, expectedPower);
 
         [When(@"Cast a healing spell")]
-        public void WhenCastAHealingSpell() => _player.CastHealingSpell();
+        public void WhenCastAHealingSpell() => _context.Player.CastHealingSpell();
 
         [When(@"I take (.*) damage")]
-        public void WhenITakeDamage(int damage) => _player.Hit(damage);
+        public void WhenITakeDamage(int damage) => _context.Player.Hit(damage);
 
         [Then(@"My health should now be (.*)")]
-        public void ThenMyHealthShouldNowBe(int expectedHealth) => Assert.Equal(expectedHealth, _player.Health);
+        public void ThenMyHealthShouldNowBe(int expectedHealth) => Assert.Equal(expectedHealth, _context.Player.Health);
 
         [Then(@"I should be dead")]
-        public void ThenIShouldBeDead() => Assert.True(_player.IsDead);
+        public void ThenIShouldBeDead() => Assert.True(_context.Player.IsDead);
     }
 }
