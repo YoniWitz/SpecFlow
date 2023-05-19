@@ -59,3 +59,9 @@ Scenario: weapons are worth money
 		| Pick  | 40    |
 		| Knife | 10    |
 	Then My weapons should be worth 100
+
+Scenario: Elf race characters don't lose magical item power
+	Given My character race is set to Elf
+	And I have a magical Amulet with a power of 200
+	When I use a magical Amulet
+	Then The magical Amulet power should not be reduced
