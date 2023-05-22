@@ -156,7 +156,7 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableTheoryAttribute(DisplayName="Elf race characters get additional 20 damage resistance", Skip="Ignored")]
+        [Xunit.SkippableTheoryAttribute(DisplayName="Elf race characters get additional 20 damage resistance")]
         [Xunit.TraitAttribute("FeatureTitle", "PlayerCharacter")]
         [Xunit.TraitAttribute("Description", "Elf race characters get additional 20 damage resistance")]
         [Xunit.TraitAttribute("Category", "elf")]
@@ -165,8 +165,7 @@ this.FeatureBackground();
         public void ElfRaceCharactersGetAdditional20DamageResistance(string damage, string remainingHealth, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "elf",
-                    "ignore"};
+                    "elf"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
