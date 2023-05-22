@@ -14,7 +14,7 @@ namespace GameCore.Specs.Features
 
         public PlayerCharacterSteps(PlayerCharacterStepsContext context) => _context = context;
 
-        [Given(@"I have the following attributes")]
+        [Given("I have the following attributes")]
         public void GivenIHaveTheFollowing(Table table)
         {
             //loosely typed
@@ -33,13 +33,13 @@ namespace GameCore.Specs.Features
             _context.Player.DamageResistance = attributes.Resistance;
         }
 
-        [Given(@"My character class is set to (.*)")]
+        [Given("My character class is set to (.*)")]
         public void GivenMyCharacterClassIsSetTo(CharacterClass characterClass) => _context.Player.CharacterClass = characterClass;
 
         [Given(@"My character race is set to (.*)")]
         public void GivenMyCharacterRaceIsSetTo(string characterRace) => _context.Player.Race = characterRace;
 
-        [Given(@"I have the followingt magical items")]
+        [Given("I have the followingt magical items")]
         public void GivenIHaveTheFollowingtMagicalItems(Table table)
         {
             //weakly typed
@@ -115,6 +115,10 @@ namespace GameCore.Specs.Features
 
         [When(@"I take (.*) damage")]
         public void WhenITakeDamage(int damage) => _context.Player.Hit(damage);
+
+        [When(@"I take (.*) damage")]
+        [Scope(Tag = "elf", Feature = "PlayerCharacter")]
+        public void WhenITakeDamageAsAnElf(int damage) => _context.Player.Hit(damage);
 
         [Then(@"My health should now be (.*)")]
         public void ThenMyHealthShouldNowBe(int expectedHealth) => Assert.Equal(expectedHealth, _context.Player.Health);
