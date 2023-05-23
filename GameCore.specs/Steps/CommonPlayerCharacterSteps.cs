@@ -16,3 +16,4 @@ namespace GameCore.Specs.Steps
         public void GivenImANewPlayer() => _context.Player = new PlayerCharacter();
     }
 }
+ 

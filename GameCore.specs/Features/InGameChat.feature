@@ -10,7 +10,7 @@ Scenario: Chat messages limited in length
 	Then the message should not be sent
 	And I get an error notification
 
-Scenario: : Chat messages are not offensive
+Scenario: Chat messages are not offensive
 	Given I have created a chat message with swearing content
 	When I try to send
 	Then the message should not be sent
