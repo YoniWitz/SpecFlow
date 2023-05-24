@@ -117,14 +117,14 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName=": Chat messages are not offensive")]
+        [Xunit.SkippableFactAttribute(DisplayName="Chat messages are not offensive")]
         [Xunit.TraitAttribute("FeatureTitle", "InGameChat")]
-        [Xunit.TraitAttribute("Description", ": Chat messages are not offensive")]
+        [Xunit.TraitAttribute("Description", "Chat messages are not offensive")]
         public void ChatMessagesAreNotOffensive()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo(": Chat messages are not offensive", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Chat messages are not offensive", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 13
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
